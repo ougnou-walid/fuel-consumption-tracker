@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "fuel-consumption-tracker": {
+    "fuel_consumption_tracker": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

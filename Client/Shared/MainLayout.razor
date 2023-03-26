@@ -1,4 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using fuel_consumption_tracker.Client.States;
+@inherits LayoutComponentBase
+
+@inject IdentityAuthenticationStateProvider authStateProvider
+@inject NavigationManager navigationManager
 
 <div class="page">
     <div class="sidebar">
@@ -7,7 +11,14 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+
+            <table border="0">
+                <tr>
+                    <td></td>
+                    <td>@UserName</td>
+                    <td><button type="button" onclick="@LogoutClick">Logout</button></td>
+                </tr>
+                </table>
         </div>
 
         <article class="content px-4">
@@ -15,3 +26,21 @@
         </article>
     </main>
 </div>
+
+
+@code {
+    string UserName = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await authStateProvider.GetAuthenticationStateAsync();
+        var ThisUser = result.User;
+        UserName = ThisUser?.Identity?.Name;
+    }
+
+    async Task LogoutClick()
+    {
+        await authStateProvider.Logout();
+        navigationManager.NavigateTo("/login");
+    }
+}
